@@ -28,10 +28,9 @@ router.get('/:id', (req, res) => {
     where: {
       id: req.params.id
     },
-    include: {
-      model: Product,
-      attributes: ['product_name']
-    }
+    include: [
+      Product
+    ]
     .then(dbCategoryData => {
       if(!dbCategoryData){
         res.status(400).json({message: 'No category found with this ID'})
@@ -53,7 +52,13 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   // create a new category
   Category.create({
-
+    //expects category name
+    category_name: req.body.category_name
+  })
+  .then(dbCategoryData => res.json(dbCategoryData))
+  .catch(err => {
+    console.log(err);
+    res.status(500).json(err);
   })
 });
 
